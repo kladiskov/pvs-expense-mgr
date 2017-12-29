@@ -1,2 +1,2 @@
-# pvs-expense-mgr
-This is a simple web application using spring and hibernate
+# Personal Repo
+This is the place where I keep my stuff.
