@@ -1,0 +1,15 @@
+h1 {
+	color:red;
+}
+
+.flt-center{
+	margin:0 auto;
+	width:100%;
+	text-align:center;
+	font-size:25px;
+	font-weight:bold;	
+}
+
+div.row {
+  border: 1px solid #ccc;
+}
