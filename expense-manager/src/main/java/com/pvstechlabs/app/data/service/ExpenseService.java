@@ -1,5 +1,6 @@
 package com.pvstechlabs.app.data.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class ExpenseService {
 
 	public List<ExpenseRecord> findAllByOrderByDate() {
 		return repo.findAllByOrderByDate();
+	}
+	
+	public List<ExpenseRecord> findByDateBetween(Date startDate, Date endDate) {
+		return repo.findByDateBetweenOrderByDate(startDate, endDate);
 	}
 
 }

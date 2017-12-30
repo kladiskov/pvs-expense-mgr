@@ -1,5 +1,6 @@
 package com.pvstechlabs.app.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pvstechlabs.app.data.entities.ExpenseRecord;
 import com.pvstechlabs.app.data.service.ExpenseService;
@@ -65,6 +67,14 @@ public class UserController {
 	@RequestMapping(value = "/view")
 	public String viewExpenses(Model model) {
 		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
+		model.addAttribute("expenses", expenses);
+		return "expenses_view";
+	}
+
+	@RequestMapping(value = "/view/filterByDate", method = RequestMethod.POST)
+	public String filterByDate(Model model, @RequestParam("startDate") Date startDate,
+			@RequestParam("endDate") Date endDate) {
+		List<ExpenseRecord> expenses = expenseService.findByDateBetween(startDate, endDate);
 		model.addAttribute("expenses", expenses);
 		return "expenses_view";
 	}
