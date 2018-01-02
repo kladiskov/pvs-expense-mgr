@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysql.fabric.xmlrpc.base.Array;
+import com.pvstechlabs.app.data.entities.ExpenseRecord;
 import com.pvstechlabs.app.data.entities.SubType;
 import com.pvstechlabs.app.data.entities.Type;
 import com.pvstechlabs.app.data.repo.TypeRepository;

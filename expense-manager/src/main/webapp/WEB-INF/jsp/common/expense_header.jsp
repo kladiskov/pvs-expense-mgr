@@ -2,7 +2,7 @@
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand">e x p e n s e m a n a g e r</a>
+			<a class="navbar-brand">EXPENSE MANAGER</a>
 
 			<ul class="nav navbar-nav">
 				<li><a href="/expense/">Home</a></li>
