@@ -10,6 +10,8 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet"
+	href="/resources/css/home.css">
 <!-- jQuery library -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -17,6 +19,9 @@
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script>
 	$(function() {
 		$("#start-date").datepicker();
@@ -30,20 +35,11 @@
 </head>
 <body>
 	<jsp:include page="../jsp/common/expense_header.jsp"></jsp:include>
-
 	<div class="container">
-		<div class="row">
-			<spring:url value="/expense/view/filterByDate" var="formUrl" />
-			<form:form modelAttribute="expense" action="${formUrl}" method="post"
-				cssClass="col-md-8 col-md-offset-2">
-				<div class="form-group">
-					<label for="filter-by-date">Filter by Date</label> Start Date: <input
-						type="text" name="startDate" id="start-date" class="date-picker"> End Date:
-					<input type="text" name="endDate" id="end-date" class="date-picker"/>
-					<button type="submit" class="btn btn-default">Submit</button>
-				</div>
-			</form:form>
-		</div>
+	<div class="sidebar">
+		<jsp:include page="../jsp/common/sidebar.jsp"></jsp:include>
+	</div>
+	<div class="main">
 		<h3>Expenses at a glance</h3>
 		<table class="table table-hover">
 			<tbody>
@@ -74,7 +70,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
-
+	</div>
 	</div>
 
 </body>

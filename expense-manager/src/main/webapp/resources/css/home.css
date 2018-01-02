@@ -1,15 +1,46 @@
 h1 {
-	color:red;
+	color: red;
 }
 
-.flt-center{
-	margin:0 auto;
-	width:100%;
-	text-align:center;
-	font-size:25px;
-	font-weight:bold;	
+.flt-center {
+	margin: 0 auto;
+	width: 100%;
+	text-align: center;
+	font-size: 25px;
+	font-weight: bold;
 }
 
 div.row {
-  border: 1px solid #ccc;
+	border: 1px solid #ccc;
+}
+
+.sidebar {
+	float: left;
+	width: 20%;
+}
+
+.main {
+	float: left;
+	width: 75%;
+}
+
+.container {
+	width: 100%;
+}
+
+.sidenav {
+	top: 70px;
+}
+
+input, label, button {
+	margin-top: 10px;
+}
+
+@media ( min-width : 1200px) .container {
+	width
+	:
+	100%;
+	
+
+}
 }

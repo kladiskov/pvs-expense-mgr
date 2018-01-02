@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pvstechlabs.app.data.entities.ExpenseRecord;
+import com.pvstechlabs.app.data.entities.Payee;
+import com.pvstechlabs.app.data.entities.Type;
 import com.pvstechlabs.app.data.service.ExpenseService;
 import com.pvstechlabs.app.data.service.PayeeService;
 import com.pvstechlabs.app.data.service.TypeService;
@@ -67,6 +69,10 @@ public class UserController {
 	@RequestMapping(value = "/view")
 	public String viewExpenses(Model model) {
 		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
+		List<Type> types = typeService.findAll();
+		List<Payee> payees = payeeService.findAll();
+		model.addAttribute("types", types);
+		model.addAttribute("payees", payees);
 		model.addAttribute("expenses", expenses);
 		return "expenses_view";
 	}
@@ -75,6 +81,40 @@ public class UserController {
 	public String filterByDate(Model model, @RequestParam("startDate") Date startDate,
 			@RequestParam("endDate") Date endDate) {
 		List<ExpenseRecord> expenses = expenseService.findByDateBetween(startDate, endDate);
+		List<Type> types = typeService.findAll();
+		List<Payee> payees = payeeService.findAll();
+		model.addAttribute("types", types);
+		model.addAttribute("payees", payees);
+		model.addAttribute("expenses", expenses);
+		return "expenses_view";
+	}
+
+	@RequestMapping(value = "/view/filterByType", method = RequestMethod.POST)
+	public String filterByType(Model model, @RequestParam("type") Long typeId) {
+		Type type = typeService.findOne(typeId);
+		if(type == null) {
+			return "expenses_view";
+		}
+		List<ExpenseRecord> expenses = expenseService.findByTypeOrderByDate(type);
+		List<Type> types = typeService.findAll();
+		List<Payee> payees = payeeService.findAll();
+		model.addAttribute("types", types);
+		model.addAttribute("payees", payees);
+		model.addAttribute("expenses", expenses);
+		return "expenses_view";
+	}
+
+	@RequestMapping(value = "/view/filterByPayee", method = RequestMethod.POST)
+	public String filterByPayee(Model model, @RequestParam("payee") Long payeeId) {
+		Payee payee = payeeService.findOne(payeeId);
+		if(payee == null) {
+			return "expenses_view"; 
+		}
+		List<ExpenseRecord> expenses = expenseService.findByPayeeOrderByDate(payee);
+		List<Type> types = typeService.findAll();
+		List<Payee> payees = payeeService.findAll();
+		model.addAttribute("types", types);
+		model.addAttribute("payees", payees);
 		model.addAttribute("expenses", expenses);
 		return "expenses_view";
 	}
@@ -100,6 +140,10 @@ public class UserController {
 			expenseService.delete(expenseId);
 		}
 		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
+		List<Type> types = typeService.findAll();
+		List<Payee> payees = payeeService.findAll();
+		model.addAttribute("types", types);
+		model.addAttribute("payees", payees);
 		model.addAttribute("expenses", expenses);
 		return "expenses_view";
 	}
