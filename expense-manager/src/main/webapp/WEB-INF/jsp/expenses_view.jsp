@@ -38,7 +38,7 @@
 	});
 	$(document).ready(function() {
 		$('#expense_view').DataTable({
-			"order" : [ [ 3, "desc" ] ],
+			"order" : [ [ 1, "desc" ] ],
 			 "pageLength": [5],
 			 "lengthMenu": [5, 10, 25, 50]
 		}
