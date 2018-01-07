@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,12 +13,15 @@ import javax.persistence.Table;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "USER_ID")
 	private Long userId;
 
-	@Column(name = "USER_NAME")
-	private String userName;
+	@Column(name = "FIRST_NAME")
+	private String firstName;
+
+	@Column(name = "LAST_NAME")
+	private String lastName;
 
 	@Column(name = "USER_MAIL")
 	private String emailId;
@@ -25,20 +29,15 @@ public class User {
 	@Column(name = "USER_PHONE")
 	private String phoneNumber;
 
+	@OneToOne(mappedBy = "user")
+	private Credential credential;
+
 	public Long getUserId() {
 		return userId;
 	}
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getEmailId() {
@@ -57,10 +56,34 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public Credential getCredential() {
+		return credential;
+	}
+
+	public void setCredential(Credential credential) {
+		this.credential = credential;
+	}
+
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", emailId=" + emailId + ", phoneNumber="
-				+ phoneNumber + "]";
+		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
+				+ ", phoneNumber=" + phoneNumber + ", credential=" + credential + "]";
 	}
 
 }
