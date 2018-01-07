@@ -10,8 +10,9 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet"
-	href="/resources/css/home.css">
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="/resources/css/home.css">
 <!-- jQuery library -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -22,6 +23,10 @@
 
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script
+	src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 <script>
 	$(function() {
 		$("#start-date").datepicker();
@@ -31,46 +36,57 @@
 		$("#end-date").datepicker();
 		$("#end-date").datepicker("option", "dateFormat", 'yy/mm/dd');
 	});
+	$(document).ready(function() {
+		$('#expense_view').DataTable({
+			"order" : [ [ 1, "desc" ] ],
+			 "pageLength": [5],
+			 "lengthMenu": [5, 10, 25, 50]
+		}
+
+		);
+	});
 </script>
 </head>
 <body>
 	<jsp:include page="../jsp/common/expense_header.jsp"></jsp:include>
 	<div class="container">
-	<div class="sidebar">
-		<jsp:include page="../jsp/common/sidebar.jsp"></jsp:include>
-	</div>
-	<div class="main">
-		<h3>Expenses at a glance</h3>
-		<table class="table table-hover">
-			<tbody>
-				<tr>
-					<th>Title</th>
-					<th>Date</th>
-					<th>Amount</th>
-					<th>Category</th>
-					<th>Payment Type</th>
-					<th>Operations</th>
-				</tr>
-				<c:forEach items="${expenses}" var="expense">
+		<div class="sidebar">
+			<jsp:include page="../jsp/common/sidebar.jsp"></jsp:include>
+		</div>
+		<div class="main">
+			<h3>Expenses at a glance</h3>
+			<table class="table table-striped table-bordered" id="expense_view">
+				<thead>
 					<tr>
-						<td><a
-							href="<spring:url 
-							value="/expense/${expense.expenseId}"/>">${expense.title}</a></td>
-						<td>${expense.date}</td>
-						<td>${expense.amount}</td>
-						<td>${expense.type.typeName}</td>
-						<td>${expense.payee.payeeName}</td>
-						<td><a
-							href="<spring:url 
-							value="/expense/edit=${expense.expenseId}"/>">update</a>
-							<a
-							href="<spring:url 
-							value="/expense/delete=${expense.expenseId}"/>">delete</a></td>
+						<th>Title</th>
+						<th>Date</th>
+						<th>Amount</th>
+						<th>Category</th>
+						<th>Payment Type</th>
+						<th>Operations</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
+					</thead>
+					<tbody>
+					<c:forEach items="${expenses}" var="expense">
+						<tr>
+							<td><a
+								href="<spring:url 
+							value="/expense/${expense.expenseId}"/>">${expense.title}</a></td>
+							<td>${expense.date}</td>
+							<td>${expense.amount}</td>
+							<td>${expense.type.typeName}</td>
+							<td>${expense.payee.payeeName}</td>
+							<td><a
+								href="<spring:url 
+							value="/expense/edit=${expense.expenseId}"/>">update</a>
+								<a
+								href="<spring:url 
+							value="/expense/delete=${expense.expenseId}"/>">delete</a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 </body>
