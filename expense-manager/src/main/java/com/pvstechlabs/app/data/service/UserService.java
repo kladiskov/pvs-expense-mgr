@@ -5,28 +5,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pvstechlabs.app.data.entities.User;
-import com.pvstechlabs.app.data.repo.UserRepository;
+import com.pvstechlabs.app.data.entities.ExpenseUser;
+import com.pvstechlabs.app.data.repo.ExpenseUserRepository;
 
 @Service
 public class UserService {
 
 	@Autowired
-	private UserRepository repo;
+	private ExpenseUserRepository repo;
 
-	public void save(User user) {
-		repo.save(user);
+	public void save(ExpenseUser expenseUser) {
+		repo.save(expenseUser);
 	}
 
 	public void delete(Long userId) {
 		repo.delete(userId);
 	}
 
-	public User findOne(Long userId) {
+	public ExpenseUser findOne(Long userId) {
 		return repo.findOne(userId);
 	}
 
-	public List<User> findAll() {
+	public List<ExpenseUser> findAll() {
 		return repo.findAll();
 	}
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pvstechlabs.app.data.entities.Credential;
-import com.pvstechlabs.app.data.entities.User;
+import com.pvstechlabs.app.data.entities.ExpenseUser;
 import com.pvstechlabs.app.data.service.CredentialService;
 import com.pvstechlabs.app.data.service.ExpenseService;
 import com.pvstechlabs.app.data.service.UserService;
@@ -44,20 +44,20 @@ public class LoginController {
 	@RequestMapping(value = "/login/newuser", method = RequestMethod.POST)
 	public String signUpStepTwo(Model model, @ModelAttribute Credential credential) {
 		System.out.println("credential.getUserName(): " + credential.getUserName());
-		User user = new User();
-		user.setCredential(credential);
-		System.out.println("User: " + user);
+		ExpenseUser expenseUser = new ExpenseUser();
+		expenseUser.setCredential(credential);
+		System.out.println("ExpenseUser: " + expenseUser);
 		System.out.println("credential:" + credential);
-		model.addAttribute("user", user);
+		model.addAttribute("user", expenseUser);
 		return "signup2";
 	}
 
 	@RequestMapping(value = "/login/finishsignup", method = RequestMethod.POST)
-	public String signUpFinish(Model model, @ModelAttribute User user) {
-		System.out.println("User: " + user);
-		userService.save(user);
-		Credential credential = user.getCredential();
-		credential.setUser(user);
+	public String signUpFinish(Model model, @ModelAttribute ExpenseUser expenseUser) {
+		System.out.println("ExpenseUser: " + expenseUser);
+		userService.save(expenseUser);
+		Credential credential = expenseUser.getCredential();
+		credential.setExpenseUser(expenseUser);
 		credentialService.save(credential);
 		return "user_login";
 	}
