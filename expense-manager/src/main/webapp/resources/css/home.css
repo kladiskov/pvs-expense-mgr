@@ -14,6 +14,14 @@ div.row {
 	border: 1px solid #ccc;
 }
 
+#header {
+	background-color:#f8f8f8;
+}
+
+#header.row{
+	padding-left: 15px;
+}
+
 .sidebar {
 	float: left;
 	width: 20%;
@@ -36,6 +44,10 @@ input, label, button {
 	margin-top: 10px;
 }
 
+
+#appointment-form input {
+	width: 300px;
+}
 @media ( min-width : 1200px) .container {
 	width
 	:

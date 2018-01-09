@@ -24,7 +24,7 @@ import com.pvstechlabs.app.data.service.TypeService;
 
 @Controller
 @RequestMapping(value = "/expense")
-public class UserController {
+public class ExpenseController {
 
 	@Autowired
 	private ExpenseService expenseService;
@@ -35,10 +35,8 @@ public class UserController {
 	@Autowired
 	private PayeeService payeeService;
 
-	@RequestMapping(value = { "/", "" })
+	@RequestMapping(value = { "", "/" })
 	public String goHome(Model model) {
-		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
-		model.addAttribute("expenses", expenses);
 		return "expense_home";
 	}
 

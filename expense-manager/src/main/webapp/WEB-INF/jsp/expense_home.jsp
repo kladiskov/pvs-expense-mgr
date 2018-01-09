@@ -20,30 +20,13 @@
 	<jsp:include page="../jsp/common/expense_header.jsp"></jsp:include>
 
 	<div class="container">
-		<h2>Expenses at a glance</h2>
-		<table class="table table-hover">
-			<tbody>
-				<tr>
-					<th>Title</th>
-					<th>Date</th>
-					<th>Amount</th>
-					<th>Category</th>
-					<th>Payment Type</th>
-				</tr>
-				<c:forEach items="${expenses}" var="expense">
-					<tr>
-						<td><a
-							href="<spring:url 
-							value="/expense/${expense.expenseId}"/>">${expense.title}</a></td>
-						<td>${expense.date}</td>
-						<td>${expense.amount}</td>
-						<td>${expense.type.typeName}</td>
-						<td>${expense.payee.payeeName}</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-
+		<div class="row">
+			<h1>Welcome to Expense Manager!</h1>
+			<h3>A personal finance tracker for all you expenses</h3>
+			<p>Create, track, view, filter all you expenses and organize
+				using the inventory management system.</p>
+			<p>A single stop solution for all your expenses.</p>
+		</div>
 	</div>
 
 </body>
