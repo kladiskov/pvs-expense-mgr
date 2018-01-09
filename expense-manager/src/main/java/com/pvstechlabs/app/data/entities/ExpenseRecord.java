@@ -40,7 +40,7 @@ public class ExpenseRecord {
 
 	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name = "USER_ID")
-	private User user;
+	private ExpenseUser expenseUser;
 
 	@Column(name = "AMOUNT")
 	private BigDecimal amount;
@@ -76,12 +76,12 @@ public class ExpenseRecord {
 		this.payee = payee;
 	}
 
-	public User getUser() {
-		return user;
+	public ExpenseUser getUser() {
+		return expenseUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(ExpenseUser expenseUser) {
+		this.expenseUser = expenseUser;
 	}
 
 	public BigDecimal getAmount() {
@@ -127,7 +127,7 @@ public class ExpenseRecord {
 	@Override
 	public String toString() {
 		return "ExpenseRecord [expenseId=" + expenseId + ", type=" + type + ", subType=" + subType + ", title=" + title
-				+ ", payee=" + payee + ", user=" + user + ", amount=" + amount + ", date=" + date + ", description="
+				+ ", payee=" + payee + ", expenseUser=" + expenseUser + ", amount=" + amount + ", date=" + date + ", description="
 				+ description + "]";
 	}
 }

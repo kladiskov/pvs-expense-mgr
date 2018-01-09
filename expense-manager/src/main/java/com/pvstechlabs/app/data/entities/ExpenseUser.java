@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "EXPENSE_USER")
-public class User {
+public class ExpenseUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +29,7 @@ public class User {
 	@Column(name = "USER_PHONE")
 	private String phoneNumber;
 
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "expenseUser")
 	private Credential credential;
 
 	public Long getUserId() {
@@ -78,12 +78,6 @@ public class User {
 
 	public void setCredential(Credential credential) {
 		this.credential = credential;
-	}
-
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", emailId=" + emailId
-				+ ", phoneNumber=" + phoneNumber + ", credential=" + credential + "]";
 	}
 
 }
