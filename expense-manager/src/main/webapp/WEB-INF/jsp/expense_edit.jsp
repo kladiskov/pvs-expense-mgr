@@ -29,27 +29,27 @@
 <script
 	src="<spring:url value="/resources/js/bootstrap-select.min.js"/>"></script>
 
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 	$(function() {
-		$('.date-picker')
-				.datepicker(
-						{
-							changeMonth : true,
-							changeYear : true,
-							showButtonPanel : true,
-							dateFormat : 'MM yy',
-							onClose : function(dateText, inst) {
-								var month = $(
-										"#ui-datepicker-div .ui-datepicker-month :selected")
-										.val();
-								var year = $(
-										"#ui-datepicker-div .ui-datepicker-year :selected")
-										.val();
-								$(this).datepicker('setDate',
-										new Date(year, month, 1));
-							}
-						});
+		$("#expense-date").datepicker();
+		$("#expense-date").datepicker("option", "dateFormat", 'yy/mm/dd');
 	});
+
+	function onChangeTypeId(id) {
+		$.get("create/" + id.value, function(data) {
+			// Assumed subcategory is id of another select
+			//  var subcat = $('#subtypeid').html('');
+			// alert(data);
+			$('#subtypeid').empty();
+			if (data.trim() == "") {
+				$('#subtypeid').html("<option> Not Available </Option>");
+			} else
+				$('#subtypeid').html(data);
+		});
+	};
 </script>
 
 </head>
@@ -60,12 +60,12 @@
 	<div class="container">
 		<div class="row">
 
-			<spring:url value="/expense/create" var="formUrl" />
+			<spring:url value="/expense/update=${expenseId}" var="formUrl" />
 			<form:form modelAttribute="expense" action="${formUrl}" method="post"
 				cssClass="col-md-8 col-md-offset-2">
 
 				<div class="form-group">
-					<label for="expense-amount">Date</label>
+					<label for="expense-date">Date</label>
 					<form:input id="expense-date" type="text" path="date"
 						cssClass="date-picker" />
 				</div>
@@ -83,7 +83,8 @@
 				</div>
 
 				<div class="form-group">
-					<label for="expense-type">Category</label> <select name="type">
+					<label for="expense-type">Category</label> <select name="type"
+						id="typeid" onChange="onChangeTypeId(this)">
 						<c:forEach var="type" items="${types}">
 							<option value="${type.typeId}" label="${type.typeName}" />
 						</c:forEach>
@@ -92,11 +93,7 @@
 
 				<div class="form-group">
 					<label for="expense-subtype">Sub Category</label> <select
-						name="subtype">
-						<c:forEach var="subtype" items="${expense.type.subTypes}">
-							<option value="${expense.type.subtype.subtypeName}"
-								label="${expense.type.subtype.subtypeName}" />
-						</c:forEach>
+						name="subType" id="subtypeid">
 					</select>
 				</div>
 
@@ -113,7 +110,6 @@
 					<form:textarea path="description" cssClass="form-control" rows="3" />
 					<form:errors path="description" />
 				</div>
-
 				<button type="submit" class="btn btn-default">Submit</button>
 
 			</form:form>

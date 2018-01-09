@@ -24,7 +24,7 @@ import com.pvstechlabs.app.data.service.TypeService;
 
 @Controller
 @RequestMapping(value = "/expense")
-public class UserController {
+public class ExpenseController {
 
 	@Autowired
 	private ExpenseService expenseService;
@@ -35,10 +35,8 @@ public class UserController {
 	@Autowired
 	private PayeeService payeeService;
 
-	@RequestMapping(value = { "/", "" })
+	@RequestMapping(value = { "", "/" })
 	public String goHome(Model model) {
-		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
-		model.addAttribute("expenses", expenses);
 		return "expense_home";
 	}
 
@@ -92,7 +90,7 @@ public class UserController {
 	@RequestMapping(value = "/view/filterByType", method = RequestMethod.POST)
 	public String filterByType(Model model, @RequestParam("type") Long typeId) {
 		Type type = typeService.findOne(typeId);
-		if(type == null) {
+		if (type == null) {
 			return "expenses_view";
 		}
 		List<ExpenseRecord> expenses = expenseService.findByTypeOrderByDate(type);
@@ -107,8 +105,8 @@ public class UserController {
 	@RequestMapping(value = "/view/filterByPayee", method = RequestMethod.POST)
 	public String filterByPayee(Model model, @RequestParam("payee") Long payeeId) {
 		Payee payee = payeeService.findOne(payeeId);
-		if(payee == null) {
-			return "expenses_view"; 
+		if (payee == null) {
+			return "expenses_view";
 		}
 		List<ExpenseRecord> expenses = expenseService.findByPayeeOrderByDate(payee);
 		List<Type> types = typeService.findAll();
@@ -129,7 +127,12 @@ public class UserController {
 	@RequestMapping(value = "/edit={expenseId}")
 	public String editExpense(Model model, @PathVariable Long expenseId) {
 		ExpenseRecord expense = expenseService.findOne(expenseId);
+		List<Type> types = typeService.findAll();
+		List<Payee> payees = payeeService.findAll();
+		model.addAttribute("types", types);
+		model.addAttribute("payees", payees);
 		model.addAttribute("expense", expense);
+		model.addAttribute("expenseId", expenseId);
 		return "expense_edit";
 	}
 
@@ -138,6 +141,23 @@ public class UserController {
 		if (expenseId != 0) {
 			System.out.println("expenseId: " + expenseId);
 			expenseService.delete(expenseId);
+		}
+		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
+		List<Type> types = typeService.findAll();
+		List<Payee> payees = payeeService.findAll();
+		model.addAttribute("types", types);
+		model.addAttribute("payees", payees);
+		model.addAttribute("expenses", expenses);
+		return "expenses_view";
+	}
+
+	@RequestMapping(value = "/update={expenseId}", method = RequestMethod.POST)
+	public String updateExpense(Model model, @PathVariable Long expenseId, @ModelAttribute ExpenseRecord record) {
+		System.out.println("updateExpense called");
+		if (expenseId != 0) {
+			System.out.println("record: " + record);
+			record.setExpenseId(expenseId);
+			expenseService.save(record);
 		}
 		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
 		List<Type> types = typeService.findAll();

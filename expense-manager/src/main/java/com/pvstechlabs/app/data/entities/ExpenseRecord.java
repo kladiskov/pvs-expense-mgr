@@ -123,4 +123,11 @@ public class ExpenseRecord {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@Override
+	public String toString() {
+		return "ExpenseRecord [expenseId=" + expenseId + ", type=" + type + ", subType=" + subType + ", title=" + title
+				+ ", payee=" + payee + ", user=" + user + ", amount=" + amount + ", date=" + date + ", description="
+				+ description + "]";
+	}
 }
