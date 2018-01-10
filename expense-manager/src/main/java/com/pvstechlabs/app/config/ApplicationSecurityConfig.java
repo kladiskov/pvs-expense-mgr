@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import com.pvstechlabs.app.security.CustomAuthenticationProvider;
 import com.pvstechlabs.app.security.ExpenseUserDetailsService;
 
 @Configuration
@@ -15,6 +16,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private ExpenseUserDetailsService userDetailsService;
+	
+	@Autowired
+	private CustomAuthenticationProvider authProvider;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -37,7 +41,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
+		//auth.userDetailsService(userDetailsService);
+		auth.authenticationProvider(authProvider);//custom
 	}
 
 }
