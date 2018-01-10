@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.pvstechlabs.app.data.entities.Payee;
 import com.pvstechlabs.app.data.entities.Type;
-import com.pvstechlabs.app.data.entities.User;
+import com.pvstechlabs.app.data.entities.ExpenseUser;
 import com.pvstechlabs.app.data.service.PayeeService;
 import com.pvstechlabs.app.data.service.TypeService;
 import com.pvstechlabs.app.data.service.UserService;
@@ -80,14 +80,14 @@ public class AdminController {
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
 	public String addUser(Model model) {
-		User user = new User();
-		model.addAttribute("user", user);
+		ExpenseUser expenseUser = new ExpenseUser();
+		model.addAttribute("user", expenseUser);
 		return "add_user";
 	}
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
-	public String saveUser(@ModelAttribute User user) {
-		userService.save(user);
+	public String saveUser(@ModelAttribute ExpenseUser expenseUser) {
+		userService.save(expenseUser);
 		return "redirect:/admin/viewUsers";
 	}
 

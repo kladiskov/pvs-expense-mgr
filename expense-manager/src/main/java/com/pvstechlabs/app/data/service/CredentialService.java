@@ -24,5 +24,9 @@ public class CredentialService {
 		return repo.findOne(credentialId);
 	}
 	
+	public Credential findByUserName(String userName) {
+		return repo.findByUserName(userName);
+	}
+	
 
 }

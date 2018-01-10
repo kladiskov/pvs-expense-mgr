@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.pvstechlabs.app.data.entities.Credential;
 import com.pvstechlabs.app.data.entities.ExpenseRecord;
 import com.pvstechlabs.app.data.entities.Payee;
 import com.pvstechlabs.app.data.entities.Type;
@@ -56,12 +58,15 @@ public class ExpenseController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String saveExpense(@Valid @ModelAttribute ExpenseRecord record, Errors errors) {
+	public String saveExpense(Model model, @Valid @ModelAttribute ExpenseRecord record, Errors errors) {
 		if (errors.hasErrors()) {
 			return "expense_add";
 		}
+		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		record.setUser(credential.getExpenseUser());
 		expenseService.save(record);
-		return "redirect:/expense";
+		model.addAttribute("expense", record);
+		return "expense_view";
 	}
 
 	@RequestMapping(value = "/view")

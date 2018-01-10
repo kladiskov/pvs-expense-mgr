@@ -2,15 +2,14 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet"
-	href="<spring:url value="/resources/css/home.css"/>" type="text/css" />
+
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet"
@@ -30,31 +29,44 @@
 
 </head>
 <body>
+
 	<div class="container">
-		<div class="row" id="header">
-			<h2>Login</h2>
+		<div class="row">
+			<h1>Create a new Account</h1>
 		</div>
-		<c:url value="/login" var="signin" />
-		<form id="appointment-form" action="${signin}" method="POST">
+		<spring:url value="/login/newuser" var="signupUrl" />
+		<form id="signup-form" modelAttribute="user" action="${signupUrl}" method="POST">
 			<div class="form-group">
-				<label for="make">Username</label> <input name="custom_username"
-					class="form-control" maxsize="20" length="20" />
+				<label for="username">Username</label>
+				<form:input name="userName" class="form-control"
+					path="user.credential.userName" />
 			</div>
 			<div class="form-group">
-				<label for="model">Password</label> <input type="password"
-					name="custom_password" class="form-control" maxsize="20"
-					length="20" />
+				<label for="password">Password</label>
+				<form:input type="password" name="password"
+					path="user.credential.password" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label for="firstName">First Name</label>
+				<form:input name="firstName" path="user.firstName"
+					class="form-control" />
+			</div>
+			<div class="form-group">
+				<label for="lastName">Last Name</label>
+				<form:input name="lastName" path="user.lastName"
+					class="form-control" />
+			</div>
+			<div class="form-group">
+				<label for="email">Email</label>
+				<form:input name="email" path="user.emailId" class="form-control" />
+			</div>
+			<div class="form-group">
+				<label for="phoneNumber">Phone Number</label>
+				<form:input name="phoneNumber" path="user.phoneNumber" class="form-control" />
 			</div>
 			<sec:csrfInput />
-			<c:if test="${param.logout != null}">
-				<p>You have successfully been logged out.</p>
-			</c:if>
-			<c:if test="${param.error != null}">
-				<p>Invalid Login credentials</p>
-			</c:if>
-			<button type="submit" id="btn-save" class="btn btn-primary">Login</button>
-			<p/>
-			<p>Don't have an account ? <a href="<c:url value="/login/newuser"/>">Signup!</a></p>
+
+			<button type="submit" id="btn-save" class="btn btn-primary">Signup</button>
 		</form>
 	</div>
 </body>

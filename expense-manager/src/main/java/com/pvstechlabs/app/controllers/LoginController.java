@@ -1,6 +1,9 @@
 package com.pvstechlabs.app.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pvstechlabs.app.data.entities.Credential;
-import com.pvstechlabs.app.data.entities.User;
+import com.pvstechlabs.app.data.entities.ExpenseUser;
 import com.pvstechlabs.app.data.service.CredentialService;
-import com.pvstechlabs.app.data.service.ExpenseService;
-import com.pvstechlabs.app.data.service.UserService;
 
 @Controller
 @RequestMapping(value = "/")
@@ -20,9 +21,6 @@ public class LoginController {
 
 	@Autowired
 	private CredentialService credentialService;
-
-	@Autowired
-	private UserService userService;
 
 	@RequestMapping(value = "")
 	public String redirectHome(Model model) {
@@ -34,37 +32,26 @@ public class LoginController {
 		return "expense_home";
 	}
 
-	@RequestMapping(value = "/login/newuser")
-	public String signUpStepOne(Model model) {
-		Credential credential = new Credential();
-		model.addAttribute("credential", credential);
-		return "signup1";
+	@RequestMapping(value = "/login/newuser", method = RequestMethod.GET)
+	public String signUp(Model model) {
+		model.addAttribute("user", new ExpenseUser());
+		return "signup";
 	}
 
 	@RequestMapping(value = "/login/newuser", method = RequestMethod.POST)
-	public String signUpStepTwo(Model model, @ModelAttribute Credential credential) {
-		System.out.println("credential.getUserName(): " + credential.getUserName());
-		User user = new User();
-		user.setCredential(credential);
-		System.out.println("User: " + user);
-		System.out.println("credential:" + credential);
-		model.addAttribute("user", user);
-		return "signup2";
-	}
-
-	@RequestMapping(value = "/login/finishsignup", method = RequestMethod.POST)
-	public String signUpFinish(Model model, @ModelAttribute User user) {
-		System.out.println("User: " + user);
-		userService.save(user);
-		Credential credential = user.getCredential();
-		credential.setUser(user);
+	public String finishSignUp(Model model, @ModelAttribute ExpenseUser expenseUser) {
+		Credential credential = expenseUser.getCredential();
+		credential.setExpenseUser(expenseUser);
+		credential.setRole("ROLE_USER");
 		credentialService.save(credential);
-		return "user_login";
+		Authentication authentication = new UsernamePasswordAuthenticationToken(credential, credential.getPassword(),
+				credential.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		return "redirect:/home";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String signInRequest(Model model) {
-		System.out.println("user_login");
 		return "user_login";
 	}
 
