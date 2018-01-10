@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +20,6 @@ import com.pvstechlabs.app.data.entities.Credential;
 import com.pvstechlabs.app.data.entities.ExpenseRecord;
 import com.pvstechlabs.app.data.entities.Payee;
 import com.pvstechlabs.app.data.entities.Type;
-import com.pvstechlabs.app.data.service.CredentialService;
 import com.pvstechlabs.app.data.service.ExpenseService;
 import com.pvstechlabs.app.data.service.PayeeService;
 import com.pvstechlabs.app.data.service.TypeService;
@@ -38,9 +36,6 @@ public class ExpenseController {
 
 	@Autowired
 	private PayeeService payeeService;
-
-	@Autowired
-	private CredentialService credentialService;
 
 	@RequestMapping(value = { "", "/" })
 	public String goHome(Model model) {
@@ -67,8 +62,7 @@ public class ExpenseController {
 		if (errors.hasErrors()) {
 			return "expense_add";
 		}
-		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-		Credential credential = credentialService.findByUserName(userName);
+		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		record.setUser(credential.getExpenseUser());
 		expenseService.save(record);
 		model.addAttribute("expense", record);

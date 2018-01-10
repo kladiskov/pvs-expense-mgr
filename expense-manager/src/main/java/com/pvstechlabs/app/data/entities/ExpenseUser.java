@@ -1,5 +1,4 @@
 package com.pvstechlabs.app.data.entities;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ public class ExpenseUser {
 	@Column(name = "USER_PHONE")
 	private String phoneNumber;
 
-	@OneToOne(mappedBy = "expenseUser")
+	@OneToOne(mappedBy = "expenseUser") 
 	private Credential credential;
 
 	public Long getUserId() {
