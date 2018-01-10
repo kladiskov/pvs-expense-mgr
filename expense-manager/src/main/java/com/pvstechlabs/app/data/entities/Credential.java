@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "CREDENTIAL")
-public class Credential implements UserDetails{
+public class Credential implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,6 +29,7 @@ public class Credential implements UserDetails{
 	private Long credentialId;
 
 	@OneToOne(cascade = CascadeType.ALL)
+	@MapsId
 	@JoinColumn(name = "USER_ID")
 	private ExpenseUser expenseUser;
 
@@ -36,7 +38,7 @@ public class Credential implements UserDetails{
 
 	@Column(name = "PASSWORD")
 	private String password;
-	
+
 	@Column(name = "ROLE")
 	private String role;
 
