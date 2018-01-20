@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pvstechlabs.app.data.entities.ExpenseRecord;
+import com.pvstechlabs.app.data.entities.ExpenseUser;
 import com.pvstechlabs.app.data.entities.Payee;
 import com.pvstechlabs.app.data.entities.Type;
 import com.pvstechlabs.app.data.repo.ExpenseRepository;
@@ -33,20 +34,20 @@ public class ExpenseService {
 		return repo.findAll();
 	}
 
-	public List<ExpenseRecord> findAllByOrderByDate() {
-		return repo.findAllByOrderByDate();
+	public List<ExpenseRecord> findAllByexpenseUserOrderByDate(ExpenseUser user) {
+		return repo.findAllByexpenseUserOrderByDate(user);
 	}
 
-	public List<ExpenseRecord> findByDateBetween(Date startDate, Date endDate) {
-		return repo.findByDateBetweenOrderByDate(startDate, endDate);
+	public List<ExpenseRecord> findByDateBetween(ExpenseUser user,Date startDate, Date endDate) {
+		return repo.findByExpenseUserAndDateBetweenOrderByDate(user,startDate, endDate);
 	}
 
-	public List<ExpenseRecord> findByTypeOrderByDate(Type type) {
-		return repo.findByTypeOrderByDate(type);
+	public List<ExpenseRecord> findByTypeOrderByDate(ExpenseUser user,Type type) {
+		return repo.findByExpenseUserAndTypeOrderByDate(user, type);
 	}
 
-	public List<ExpenseRecord> findByPayeeOrderByDate(Payee payee){
-		return repo.findByPayeeOrderByDate(payee);
+	public List<ExpenseRecord> findByPayeeOrderByDate(ExpenseUser user,Payee payee){
+		return repo.findByExpenseUserAndPayeeOrderByDate(user,payee);
 	}
 
 }

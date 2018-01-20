@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pvstechlabs.app.data.entities.Credential;
 import com.pvstechlabs.app.data.entities.ExpenseRecord;
+import com.pvstechlabs.app.data.entities.ExpenseUser;
 import com.pvstechlabs.app.data.entities.Payee;
 import com.pvstechlabs.app.data.entities.Type;
 import com.pvstechlabs.app.data.service.ExpenseService;
@@ -71,7 +72,8 @@ public class ExpenseController {
 
 	@RequestMapping(value = "/view")
 	public String viewExpenses(Model model) {
-		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
+		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<ExpenseRecord> expenses = expenseService.findAllByexpenseUserOrderByDate(credential.getExpenseUser());
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -83,7 +85,7 @@ public class ExpenseController {
 	@RequestMapping(value = "/view/filterByDate", method = RequestMethod.POST)
 	public String filterByDate(Model model, @RequestParam("startDate") Date startDate,
 			@RequestParam("endDate") Date endDate) {
-		List<ExpenseRecord> expenses = expenseService.findByDateBetween(startDate, endDate);
+		List<ExpenseRecord> expenses = expenseService.findByDateBetween(getLoggedInUser(), startDate, endDate);
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -98,7 +100,7 @@ public class ExpenseController {
 		if (type == null) {
 			return "expenses_view";
 		}
-		List<ExpenseRecord> expenses = expenseService.findByTypeOrderByDate(type);
+		List<ExpenseRecord> expenses = expenseService.findByTypeOrderByDate(getLoggedInUser(), type);
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -113,7 +115,7 @@ public class ExpenseController {
 		if (payee == null) {
 			return "expenses_view";
 		}
-		List<ExpenseRecord> expenses = expenseService.findByPayeeOrderByDate(payee);
+		List<ExpenseRecord> expenses = expenseService.findByPayeeOrderByDate(getLoggedInUser(), payee);
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -147,7 +149,8 @@ public class ExpenseController {
 			System.out.println("expenseId: " + expenseId);
 			expenseService.delete(expenseId);
 		}
-		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
+		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<ExpenseRecord> expenses = expenseService.findAllByexpenseUserOrderByDate(getLoggedInUser());
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -164,13 +167,18 @@ public class ExpenseController {
 			record.setExpenseId(expenseId);
 			expenseService.save(record);
 		}
-		List<ExpenseRecord> expenses = expenseService.findAllByOrderByDate();
+		List<ExpenseRecord> expenses = expenseService.findAllByexpenseUserOrderByDate(getLoggedInUser());
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
 		model.addAttribute("payees", payees);
 		model.addAttribute("expenses", expenses);
 		return "expenses_view";
+	}
+	
+	private ExpenseUser getLoggedInUser() {
+		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return credential.getExpenseUser();
 	}
 
 }
