@@ -27,21 +27,21 @@
 				using the inventory management system.</p>
 			<p>A single stop solution for all your expenses.</p>
 		</div>
-		<c:if test="${records != null}">
+		<c:if test="${page != null}">
 			<div align="center">
 				<table class="table table-hover" border="5" align="left">
 					<caption>
 						<h2>Your records at a glance</h2>
 					</caption>
 					<tr>
-						<th>Date</th>
-						<th>Title</th>
-						<th>Payment Type</th>
-						<th>Category</th>
-						<th>Sub Category</th>
-						<th>Amount</th>
+						<th><a href="<spring:url value="/expense?page=${page.number}&sort=date"/>">Date</a></th>
+						<th><a href="<spring:url value="/expense?page=${page.number}&sort=title"/>">Title</a></th>
+						<th><a href="<spring:url value="/expense?page=${page.number}&sort=payee.payeeName"/>">Payment Type</a></th>
+						<th><a href="<spring:url value="/expense?page=${page.number}&sort=type.typeName"/>">Category</a></th>
+						<th><a href="<spring:url value="/expense?page=${page.number}&sort=subType"/>">Sub Category</a></th>
+						<th><a href="<spring:url value="/expense?page=${page.number}&sort=amount"/>">Amount</a></th>
 					</tr>
-					<c:forEach items="${records}" var="record">
+					<c:forEach items="${page.content}" var="record">
 						<tr>
 							<td><c:out value="${record.date}" /></td>
 							<td><c:out value="${record.title}" /></td>
@@ -53,11 +53,11 @@
 					</c:forEach>
 				</table>
 			</div>
-			<c:if test="${nextId != null}">
-				<td><a
-					href="<spring:url 
-							value="/expense/next/${nextId}"/>">next</a></td>
-			</c:if>
+			<td><a href="<spring:url 
+				value="/expense?page=${page.number - 1}&sort=${sort}"/>">[Previous]</a></td>
+			<td><c:out value="[ ${page.number} ]" /></td>
+			<td><a href="<spring:url 
+				value="/expense?page=${page.number + 1}&sort=${sort}"/>">[Next]</a></td>
 		</c:if>
 	</div>
 

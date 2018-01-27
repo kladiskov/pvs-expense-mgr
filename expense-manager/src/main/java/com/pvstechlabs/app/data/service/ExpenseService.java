@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -58,9 +57,8 @@ public class ExpenseService {
 		return repo.findByExpenseUserAndTitleContainingOrderByDate(loggedInUser, title);
 	}
 	
-	public Slice<ExpenseRecord> findByExpenseUser(ExpenseUser user, int pageNumber) {
-		PageRequest pageRequest = new PageRequest(pageNumber, 5);
-		return repo.findByExpenseUserOrderByDate(user, pageRequest);
+	public Slice<ExpenseRecord> findByExpenseUser(ExpenseUser user, Pageable pageable) {
+		return repo.findByExpenseUser(user, pageable);
 	}
 
 }

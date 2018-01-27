@@ -15,7 +15,7 @@
 					class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="<spring:url value="/expense/create"/>">Create</a></li>
-					<li><a href="<spring:url value="/expense/view"/>">View</a></li>
+					<li><a href="<spring:url value="/expense/view"/>">Manage</a></li>
 				</ul></li>
 		</ul>
 		<ul class="nav navbar-nav  navbar-right">

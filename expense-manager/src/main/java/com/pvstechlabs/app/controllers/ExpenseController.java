@@ -6,7 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import com.pvstechlabs.app.data.entities.ExpenseRecord;
 import com.pvstechlabs.app.data.entities.ExpenseUser;
 import com.pvstechlabs.app.data.entities.Payee;
 import com.pvstechlabs.app.data.entities.Type;
+import com.pvstechlabs.app.data.repo.ExpenseRepository;
 import com.pvstechlabs.app.data.service.ExpenseService;
 import com.pvstechlabs.app.data.service.PayeeService;
 import com.pvstechlabs.app.data.service.TypeService;
@@ -40,29 +42,9 @@ public class ExpenseController {
 	private PayeeService payeeService;
 
 	@RequestMapping(value = { "", "/" })
-	public String goHome(Model model) {
-		Slice<ExpenseRecord> slice = expenseService.findByExpenseUser(getLoggedInUser(), 0);
-		if (slice.hasNext()) {
-			System.out.println("hasNext");
-			model.addAttribute("nextId", "1");
-		}
-		if (slice.hasContent()) {
-			model.addAttribute("records", slice.getContent());
-		}
-		return "expense_home";
-	}
-	
-	@RequestMapping(value = "/next/{nextId}")
-	public String getNext(Model model, @PathVariable int nextId) {
-		Slice<ExpenseRecord> slice = expenseService.findByExpenseUser(getLoggedInUser(), nextId);
-		if (slice.hasNext()) {
-			System.out.println("hasNext");
-			nextId++;
-			model.addAttribute("nextId", nextId);
-		}
-		if (slice.hasContent()) {
-			model.addAttribute("records", slice.getContent());
-		}
+	public String goHome(Model model, Pageable pageable, Sort sort) {
+		model.addAttribute("page", expenseService.findByExpenseUser(getLoggedInUser(), pageable));
+		model.addAttribute("sort", (sort != null) ? sort.iterator().next().getProperty() : "");
 		return "expense_home";
 	}
 
@@ -181,7 +163,6 @@ public class ExpenseController {
 			System.out.println("expenseId: " + expenseId);
 			expenseService.delete(expenseId);
 		}
-		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<ExpenseRecord> expenses = expenseService.findAll(getLoggedInUser());
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
