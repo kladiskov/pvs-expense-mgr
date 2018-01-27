@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../resources/css/home.css">
 <div id="mySidenav" class="sidenav">
 	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-	<div class="row">
+	<div class="row" id="firstdiv">
 		<spring:url value="/expense/view/filterByDate" var="formUrl" />
 		<form:form modelAttribute="expense" action="${formUrl}" method="post"
 			cssClass="col-md-8 col-md-offset-2">
@@ -15,8 +15,8 @@
 				<label for="filter-by-date">Filter by Date</label> <label
 					for="startDate">Start Date:</label> <input type="text"
 					name="startDate" id="start-date" class="date-picker"> <label
-					for="endDate">End Date:</label> <input type="text"
-					name="endDate" id="end-date" class="date-picker" />
+					for="endDate">End Date:</label> <input type="text" name="endDate"
+					id="end-date" class="date-picker" />
 				<button type="submit" class="btn btn-default">Submit</button>
 			</div>
 		</form:form>
@@ -47,6 +47,17 @@
 						<option value="${payee.payeeId}" label="${payee.payeeName}" />
 					</c:forEach>
 				</select>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</div>
+		</form:form>
+	</div>
+	<div class="row">
+		<spring:url value="/expense/view/keyWordSearch" var="formUrl" />
+		<form:form modelAttribute="expense" action="${formUrl}" method="post"
+			cssClass="col-md-8 col-md-offset-2">
+			<div class="form-group">
+				<label for="filter-by-keyword">Search for expenses</label> <input
+					type="text" name="title" id="expense-title">
 				<button type="submit" class="btn btn-default">Submit</button>
 			</div>
 		</form:form>

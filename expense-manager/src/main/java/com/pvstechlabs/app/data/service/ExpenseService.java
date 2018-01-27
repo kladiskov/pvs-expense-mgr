@@ -34,20 +34,24 @@ public class ExpenseService {
 		return repo.findAll();
 	}
 
-	public List<ExpenseRecord> findAllByexpenseUserOrderByDate(ExpenseUser user) {
+	public List<ExpenseRecord> findAll(ExpenseUser user) {
 		return repo.findAllByexpenseUserOrderByDate(user);
 	}
 
-	public List<ExpenseRecord> findByDateBetween(ExpenseUser user,Date startDate, Date endDate) {
-		return repo.findByExpenseUserAndDateBetweenOrderByDate(user,startDate, endDate);
+	public List<ExpenseRecord> findByDateBetween(ExpenseUser user, Date startDate, Date endDate) {
+		return repo.findByExpenseUserAndDateBetweenOrderByDate(user, startDate, endDate);
 	}
 
-	public List<ExpenseRecord> findByTypeOrderByDate(ExpenseUser user,Type type) {
+	public List<ExpenseRecord> findByType(ExpenseUser user, Type type) {
 		return repo.findByExpenseUserAndTypeOrderByDate(user, type);
 	}
 
-	public List<ExpenseRecord> findByPayeeOrderByDate(ExpenseUser user,Payee payee){
-		return repo.findByExpenseUserAndPayeeOrderByDate(user,payee);
+	public List<ExpenseRecord> findByPayee(ExpenseUser user, Payee payee) {
+		return repo.findByExpenseUserAndPayeeOrderByDate(user, payee);
+	}
+
+	public List<ExpenseRecord> findByTitle(ExpenseUser loggedInUser, String title) {
+		return repo.findByExpenseUserAndTitleContainingOrderByDate(loggedInUser, title);
 	}
 
 }

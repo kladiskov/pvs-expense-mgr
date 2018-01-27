@@ -63,8 +63,7 @@ public class ExpenseController {
 		if (errors.hasErrors()) {
 			return "expense_add";
 		}
-		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		record.setUser(credential.getExpenseUser());
+		record.setUser(getLoggedInUser());
 		expenseService.save(record);
 		model.addAttribute("expense", record);
 		return "expense_view";
@@ -72,8 +71,7 @@ public class ExpenseController {
 
 	@RequestMapping(value = "/view")
 	public String viewExpenses(Model model) {
-		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<ExpenseRecord> expenses = expenseService.findAllByexpenseUserOrderByDate(credential.getExpenseUser());
+		List<ExpenseRecord> expenses = expenseService.findAll(getLoggedInUser());
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -100,7 +98,7 @@ public class ExpenseController {
 		if (type == null) {
 			return "expenses_view";
 		}
-		List<ExpenseRecord> expenses = expenseService.findByTypeOrderByDate(getLoggedInUser(), type);
+		List<ExpenseRecord> expenses = expenseService.findByType(getLoggedInUser(), type);
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -115,7 +113,19 @@ public class ExpenseController {
 		if (payee == null) {
 			return "expenses_view";
 		}
-		List<ExpenseRecord> expenses = expenseService.findByPayeeOrderByDate(getLoggedInUser(), payee);
+		List<ExpenseRecord> expenses = expenseService.findByPayee(getLoggedInUser(), payee);
+		List<Type> types = typeService.findAll();
+		List<Payee> payees = payeeService.findAll();
+		model.addAttribute("types", types);
+		model.addAttribute("payees", payees);
+		model.addAttribute("expenses", expenses);
+		return "expenses_view";
+	}
+	
+	@RequestMapping(value = "/view/keyWordSearch", method = RequestMethod.POST)
+	public String filterByKeyword(Model model, @RequestParam("title") String title) {
+		System.out.println("title: " + title);
+		List<ExpenseRecord> expenses = expenseService.findByTitle(getLoggedInUser(), title);
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -150,7 +160,7 @@ public class ExpenseController {
 			expenseService.delete(expenseId);
 		}
 		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		List<ExpenseRecord> expenses = expenseService.findAllByexpenseUserOrderByDate(getLoggedInUser());
+		List<ExpenseRecord> expenses = expenseService.findAll(getLoggedInUser());
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);
@@ -167,7 +177,7 @@ public class ExpenseController {
 			record.setExpenseId(expenseId);
 			expenseService.save(record);
 		}
-		List<ExpenseRecord> expenses = expenseService.findAllByexpenseUserOrderByDate(getLoggedInUser());
+		List<ExpenseRecord> expenses = expenseService.findAll(getLoggedInUser());
 		List<Type> types = typeService.findAll();
 		List<Payee> payees = payeeService.findAll();
 		model.addAttribute("types", types);

@@ -26,7 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 		Credential credential = repo.findByUserName(token.getName());
-		if (!credential.getPassword().equals(token.getCredentials().toString())) {
+		if (credential == null || !credential.getPassword().equals(token.getCredentials().toString())) {
 			throw new BadCredentialsException("The credentials are invalid.");
 		}
 		return new UsernamePasswordAuthenticationToken(credential, credential.getPassword(),
