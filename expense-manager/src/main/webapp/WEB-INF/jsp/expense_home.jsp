@@ -27,6 +27,38 @@
 				using the inventory management system.</p>
 			<p>A single stop solution for all your expenses.</p>
 		</div>
+		<c:if test="${records != null}">
+			<div align="center">
+				<table class="table table-hover" border="5" align="left">
+					<caption>
+						<h2>Your records at a glance</h2>
+					</caption>
+					<tr>
+						<th>Date</th>
+						<th>Title</th>
+						<th>Payment Type</th>
+						<th>Category</th>
+						<th>Sub Category</th>
+						<th>Amount</th>
+					</tr>
+					<c:forEach items="${records}" var="record">
+						<tr>
+							<td><c:out value="${record.date}" /></td>
+							<td><c:out value="${record.title}" /></td>
+							<td><c:out value="${record.payee.payeeName}" /></td>
+							<td><c:out value="${record.type.typeName}" /></td>
+							<td><c:out value="${record.subType}" /></td>
+							<td><c:out value="${record.amount}" /></td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+			<c:if test="${nextId != null}">
+				<td><a
+					href="<spring:url 
+							value="/expense/next/${nextId}"/>">next</a></td>
+			</c:if>
+		</c:if>
 	</div>
 
 </body>

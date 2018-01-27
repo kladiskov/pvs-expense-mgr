@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.pvstechlabs.app.data.entities.ExpenseRecord;
@@ -52,6 +56,11 @@ public class ExpenseService {
 
 	public List<ExpenseRecord> findByTitle(ExpenseUser loggedInUser, String title) {
 		return repo.findByExpenseUserAndTitleContainingOrderByDate(loggedInUser, title);
+	}
+	
+	public Slice<ExpenseRecord> findByExpenseUser(ExpenseUser user, int pageNumber) {
+		PageRequest pageRequest = new PageRequest(pageNumber, 5);
+		return repo.findByExpenseUserOrderByDate(user, pageRequest);
 	}
 
 }

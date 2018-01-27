@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +41,28 @@ public class ExpenseController {
 
 	@RequestMapping(value = { "", "/" })
 	public String goHome(Model model) {
+		Slice<ExpenseRecord> slice = expenseService.findByExpenseUser(getLoggedInUser(), 0);
+		if (slice.hasNext()) {
+			System.out.println("hasNext");
+			model.addAttribute("nextId", "1");
+		}
+		if (slice.hasContent()) {
+			model.addAttribute("records", slice.getContent());
+		}
+		return "expense_home";
+	}
+	
+	@RequestMapping(value = "/next/{nextId}")
+	public String getNext(Model model, @PathVariable int nextId) {
+		Slice<ExpenseRecord> slice = expenseService.findByExpenseUser(getLoggedInUser(), nextId);
+		if (slice.hasNext()) {
+			System.out.println("hasNext");
+			nextId++;
+			model.addAttribute("nextId", nextId);
+		}
+		if (slice.hasContent()) {
+			model.addAttribute("records", slice.getContent());
+		}
 		return "expense_home";
 	}
 
@@ -121,7 +144,7 @@ public class ExpenseController {
 		model.addAttribute("expenses", expenses);
 		return "expenses_view";
 	}
-	
+
 	@RequestMapping(value = "/view/keyWordSearch", method = RequestMethod.POST)
 	public String filterByKeyword(Model model, @RequestParam("title") String title) {
 		System.out.println("title: " + title);
@@ -135,8 +158,7 @@ public class ExpenseController {
 	}
 
 	@RequestMapping(value = "/{expenseId}")
-	public String viewExpense(Model model, @PathVariable Long expenseId) {
-		ExpenseRecord expense = expenseService.findOne(expenseId);
+	public String viewExpense(Model model, @PathVariable("expenseId") ExpenseRecord expense) {
 		model.addAttribute("expense", expense);
 		return "expense_view";
 	}
@@ -185,7 +207,7 @@ public class ExpenseController {
 		model.addAttribute("expenses", expenses);
 		return "expenses_view";
 	}
-	
+
 	private ExpenseUser getLoggedInUser() {
 		Credential credential = (Credential) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return credential.getExpenseUser();
